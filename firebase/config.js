@@ -7,6 +7,8 @@ import { getFirestore } from "firebase/firestore";
 // Функція для підключення сховища файлів в проект
 import { getStorage } from "firebase/storage";
 
+
+
 const firebaseConfig = {
     apiKey: "AIzaSyANo0x2zT4TSU8jcPK8AOaA-0ZMMjGQgvM",
     authDomain: "react-native-b71ad.firebaseapp.com",
@@ -16,6 +18,8 @@ const firebaseConfig = {
     appId: "1:994784938866:web:0801ccdb437c0966c06beb",
     measurementId: "G-4ZD0EVJLMR"
 };
+
+
 
 const app = initializeApp(firebaseConfig);
 

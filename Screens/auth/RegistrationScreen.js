@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
     StyleSheet,
     View,
-    Image,
     ImageBackground,
     TextInput,
     TouchableWithoutFeedback,
@@ -13,6 +12,9 @@ import {
     Text,
     Dimensions,
 } from "react-native";
+import Add from '../../assets/images/add.svg';
+import {useDispatch} from "react-redux";
+import {authSignUpUser} from "../../redux/auth/authOperations";
 
 
 
@@ -23,18 +25,24 @@ export const RegistrationScreen = ({ navigation }) => {
     const [isPassHidden, setIsPassHidden] = useState(true);
     const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
+    const dispatch = useDispatch();
+
     const loginHandler = (value) => setLogin(value);
     const emailHandler = (value) => setEmail(value);
     const passwordHandler = (value) => setPassword(value);
     const showPassHandler = () => setIsPassHidden(!isPassHidden);
 
     const onLogin = () => {
-        console.log(`Login: ${login}, Email: ${email}, Password: ${password}`);
+       console.log(login, email, password);
         Keyboard.dismiss();
+
+        dispatch(authSignUpUser({login, email, password}));
+
         setLogin("");
         setEmail("");
         setPassword("");
-        // navigation.navigate('Home');
+
+
     };
 
     return (
@@ -58,10 +66,7 @@ export const RegistrationScreen = ({ navigation }) => {
                                 left: Dimensions.get("window").width / 2,
                             }}
                         >
-                            <Image
-                                source={require("../../assets/images/add.svg")}
-                                style={styles.avatarBtn}
-                            />
+                            <Add style={styles.avatarBtn}/>
                         </View>
                         <Text style={styles.heading}>Регистрация</Text>
                         <View style={styles.form}>
