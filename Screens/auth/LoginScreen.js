@@ -12,6 +12,10 @@ import {
     Text,
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+import {authSignInUser, authSignUpUser} from "../../redux/auth/authOperations";
+
+
 export const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,13 +26,16 @@ export const LoginScreen = ({ navigation }) => {
     const passwordHandler = (value) => setPassword(value);
     const showPassHandler = () => setIsPassHidden(!isPassHidden);
 
+    const dispatch = useDispatch();
+
     const onLogin = () => {
         console.log(`Email: ${email}, Password: ${password}`);
         Keyboard.dismiss();
+
+        dispatch(authSignInUser({ email, password}));
+
         setEmail("");
         setPassword("");
-        // navigation.navigate('Home');
-
     };
 
     return (

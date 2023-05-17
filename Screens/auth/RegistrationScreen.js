@@ -33,7 +33,6 @@ export const RegistrationScreen = ({ navigation }) => {
     const showPassHandler = () => setIsPassHidden(!isPassHidden);
 
     const onLogin = () => {
-       console.log(login, email, password);
         Keyboard.dismiss();
 
         dispatch(authSignUpUser({login, email, password}));
