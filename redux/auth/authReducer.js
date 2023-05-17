@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const state = {
     userId: null,
     nickName: null,
+    stateChange: null,
 }
 export const authSlice = createSlice({
     name: 'auth',
@@ -10,9 +11,13 @@ export const authSlice = createSlice({
     reducers: {
         updateUserProfile: (state, {payload}) => ({
             ...state,
-            userId: payload.userId
+            userId: payload.userId,
+            nickName: payload.nickName,
         }),
-
+        authStateChange: (state, {payload}) => ({
+            ...state,
+            stateChange: payload.stateChange
+        }),
 
     }
 })
