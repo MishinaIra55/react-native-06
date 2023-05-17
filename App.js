@@ -6,15 +6,22 @@ import {useRoute} from "./router";
 import { Provider } from 'react-redux'
 import {store} from "./redux/store";
 
+import { onAuthStateChanged } from "firebase/auth";
+import {auth} from './firebase/config';
+import {useState} from "react";
+
 
 
 
 
 
 export default function App() {
-    const routing = useRoute(false);
+const [user, setUser] = useState(null);
+    onAuthStateChanged(auth, (user) => setUser(user));
 
-  return (
+    const routing = useRoute(user);
+
+    return (
       <Provider store={store}>
           <NavigationContainer>
               {routing}
