@@ -15,9 +15,8 @@ export const Main = () => {
 
 
     useEffect(() => {
-         dispatch(authStateChangeUser());
+        dispatch(authStateChangeUser());
     }, [])
-
 
 
     const routing = useRoute(stateChange);

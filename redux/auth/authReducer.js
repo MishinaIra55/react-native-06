@@ -4,6 +4,7 @@ const state = {
     userId: null,
     nickName: null,
     stateChange: false,
+
 }
 export const authSlice = createSlice({
     name: 'auth',
@@ -18,7 +19,7 @@ export const authSlice = createSlice({
             ...state,
             stateChange: payload.stateChange,
         }),
-
+        authSingOut: () => state,
     }
 })
 

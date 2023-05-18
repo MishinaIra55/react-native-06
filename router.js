@@ -21,31 +21,25 @@ import LogoutIcon from './assets/images/logout.svg';
 
 import {TouchableOpacity} from "react-native-gesture-handler";
 
-const HeaderLogOut = () => (
-    <TouchableOpacity style={{ marginRight: 10 }} onPress={() => console.log('Logout')}>
-        <LogoutIcon width={24} height={24} />
-    </TouchableOpacity>
-);
+import {authSignOutUser} from "./redux/auth/authOperations";
+import {useDispatch} from "react-redux";
+import {Button} from "react-native";
+
 
 export const useRoute = (isAuth) => {
+    const dispatch = useDispatch();
+
+    const signOut = () => {
+        dispatch(authSignOutUser())
+    }
+
+
     if (!isAuth) {
         return (
             <AuthStack.Navigator >
-                <AuthStack.Screen
-                    options={{
-                        headerShown: false,
-                    }}
-                    name="Registration"
-                    component={RegistrationScreen} />
-                <AuthStack.Screen
-                    options={{
-                        headerShown: false,
-                    }}
-                    name="Login"
-                    component={LoginScreen} />
-
+                <AuthStack.Screen options={{headerShown: false,}} name="Registration" component={RegistrationScreen} />
+                <AuthStack.Screen options={{headerShown: false,}} name="Login" component={LoginScreen} />
             </AuthStack.Navigator>
-
         );
     }
     return (
@@ -68,7 +62,7 @@ export const useRoute = (isAuth) => {
                         />
                     ),
 
-                    // title: "Публикации",
+
                     headerTintColor: "#212121",
                     headerTitleStyle: {
                         fontWeight: "bold",
@@ -82,7 +76,12 @@ export const useRoute = (isAuth) => {
                         borderBottomColor: '#ccc',
                     },
                     headerTitleAlign: 'center',
-                    headerRight: () => <HeaderLogOut/>,
+                    headerRight: () => (
+                        <TouchableOpacity onPress={signOut}>
+                            <LogoutIcon width={24} height={24}/>
+                        </TouchableOpacity>
+                    ),
+                    // headerRight: () => <Button title="signOut" onPress={signOut} />
                 }}
             />
             <MainTab.Screen
