@@ -23,7 +23,7 @@ import {TouchableOpacity} from "react-native-gesture-handler";
 
 import {authSignOutUser} from "./redux/auth/authOperations";
 import {useDispatch} from "react-redux";
-import {Button} from "react-native";
+
 
 
 export const useRoute = (isAuth) => {
@@ -77,11 +77,10 @@ export const useRoute = (isAuth) => {
                     },
                     headerTitleAlign: 'center',
                     headerRight: () => (
-                        <TouchableOpacity onPress={signOut}>
-                            <LogoutIcon width={24} height={24}/>
+                        <TouchableOpacity  style={{paddingRight: 10}} >
+                            <LogoutIcon width={24} height={24} onPress={signOut}/>
                         </TouchableOpacity>
                     ),
-                    // headerRight: () => <Button title="signOut" onPress={signOut} />
                 }}
             />
             <MainTab.Screen
