@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, KeyboardAvoidingView, 
 
 
 
-import { ref, uploadBytes  } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { storage } from '../../firebase/config'
 
@@ -77,7 +77,9 @@ export const CreateScreen  = ({navigation}) => {
 
             const storageRef  = ref(storage, `postsImage/${uniquePostId}`);
             await uploadBytes(storageRef, file);
-            console.log("Photo uploaded successfully!");
+
+            const downloadURL = await getDownloadURL(storageRef);
+            console.log("Photo uploaded successfully!", downloadURL);
         } catch (error) {
             console.error("Error uploading photo:", error);
         }
