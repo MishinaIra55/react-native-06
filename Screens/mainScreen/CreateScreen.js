@@ -73,7 +73,7 @@ export const CreateScreen  = ({navigation}) => {
     const submitFoto = async () => {
         uploadPostToServer()
         // uploadPhotoToServer()
-        navigation.navigate('HomeDefault', {photo})
+        navigation.navigate('HomeDefault');
         setIsBoardActive(false)
         Keyboard.dismiss()
         setName('')
