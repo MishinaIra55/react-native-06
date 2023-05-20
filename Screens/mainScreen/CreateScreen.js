@@ -1,19 +1,29 @@
-import { Camera } from "expo-camera";
-import { StyleSheet, View, Text, TouchableOpacity, Image, KeyboardAvoidingView, TextInput, Dimensions, Keyboard } from "react-native";
+import {Camera} from "expo-camera";
+import {
+    Dimensions,
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 
 
+import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
 
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
-import { storage } from '../../firebase/config'
+import {firestore, storage} from '../../firebase/config'
 
 import * as Location from 'expo-location';
+import {addDoc, collection} from "firebase/firestore";
 
 
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-import { useState, useEffect } from "react";
+import {useEffect, useState} from "react";
+import { useSelector } from "react-redux";
 import Photo from "../../assets/images/camera.svg";
 
 
@@ -28,6 +38,7 @@ export const CreateScreen  = ({navigation}) => {
         Dimensions.get("window").width - 20 * 2
     );
 
+    const { userId, nickName } = useSelector((state) => state.auth)
 
 
     useEffect(() => {
@@ -36,16 +47,20 @@ export const CreateScreen  = ({navigation}) => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 console.log('Permission to access location was denied');
-                return;
-            }
 
-            let locationRef = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, maximumAge: 10000});
-            setLocation(locationRef);
+            }
+            let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, maximumAge: 10000});
+            setLocation(location);
+
         })();
     }, []);
 
 
     const takeFoto = async () => {
+
+        console.log("name", name);
+        console.log("nameLocation", name);
+        console.log("location", location);
         try {
             const foto = await camera.takePictureAsync()
             setPhoto(foto.uri)
@@ -55,8 +70,9 @@ export const CreateScreen  = ({navigation}) => {
         }
 
     }
-    const submitFoto = () => {
-        uploadPhotoToServer()
+    const submitFoto = async () => {
+        uploadPostToServer()
+        // uploadPhotoToServer()
         navigation.navigate('HomeDefault', {photo})
         setIsBoardActive(false)
         Keyboard.dismiss()
@@ -65,7 +81,28 @@ export const CreateScreen  = ({navigation}) => {
         setPhoto('')
     }
 
+const uploadPostToServer = async () => {
+        try {
+            const photo = await uploadPhotoToServer()
+            console.log(photo);
 
+            const docRef = await addDoc(collection(firestore, "posts"), {
+                name,
+                location,
+                nameLocation,
+                photo,
+                user: {
+                    userId,
+                    nickName,
+                }
+            });
+            console.log("Document written with ID: ", docRef.id);
+
+        } catch (error) {
+            console.log("error", error.message);
+        }
+
+}
     const uploadPhotoToServer = async () => {
         try {
             const response = await fetch(photo)
@@ -78,8 +115,8 @@ export const CreateScreen  = ({navigation}) => {
             const storageRef  = ref(storage, `postsImage/${uniquePostId}`);
             await uploadBytes(storageRef, file);
 
-            const downloadURL = await getDownloadURL(storageRef);
-            console.log("Photo uploaded successfully!", downloadURL);
+            return await getDownloadURL(storageRef);
+
         } catch (error) {
             console.error("Error uploading photo:", error);
         }
@@ -98,8 +135,9 @@ export const CreateScreen  = ({navigation}) => {
         };
     }, []);
 
-    const handleChangeName = (value) => setName(value)
-    const handleChangeNameLocation = (value) => setNameLocation(value)
+    const handleChangeName = (value) => setName(value);
+
+    const handleChangeNameLocation = (value) => setNameLocation(value);
 
 
     return (
@@ -124,15 +162,11 @@ export const CreateScreen  = ({navigation}) => {
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
                     <View style={{...styles.form, marginBottom: isKeyBoardActive ? 32 : 100, width: dimensions}}>
                         <View style={{ borderBottomColor: '#E8E8E8', borderBottomWidth: 1, marginBottom: 32}}>
-                            <TextInput style={styles.input}    placeholder="Имя" value={name} onFocus={() => setIsBoardActive(true)}  onChangeText={handleChangeName}>
-
-                            </TextInput>
+                            <TextInput  style={styles.input}    placeholder="Имя" value={name} onFocus={() => setIsBoardActive(true)}  onChangeText={handleChangeName}/>
                         </View>
                         <View style={{flexDirection: 'row', alignItems: 'center', borderBottomColor: '#E8E8E8', borderBottomWidth: 1, marginBottom: 32}}>
                             <MaterialCommunityIcons name="google-maps" size={24} color="#BDBDBD" />
-                            <TextInput style={{...styles.input, paddingLeft: 8}}   placeholder="Место" value={nameLocation} onFocus={() => setIsBoardActive(true)} onChangeText={handleChangeNameLocation}>
-
-                            </TextInput>
+                            <TextInput style={{...styles.input, paddingLeft: 8}}   placeholder="Место" value={nameLocation} onFocus={() => setIsBoardActive(true)} onChangeText={handleChangeNameLocation}/>
                         </View>
                         <TouchableOpacity disabled={photo.length === 0 && true} onPress={submitFoto} style={{
                             width: '100%',
