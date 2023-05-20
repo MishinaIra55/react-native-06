@@ -8,6 +8,7 @@ import {EvilIcons, MaterialCommunityIcons} from "@expo/vector-icons";
 export const DefaultScreenPosts = ({  navigation }) => {
     const [posts, setPosts] = useState([]);
 
+
     const getAllPosts = async () => {
         try {
             await onSnapshot(collection(firestore, 'posts'), (data) => {
@@ -35,13 +36,13 @@ export const DefaultScreenPosts = ({  navigation }) => {
                         <Text style={styles.name}>{item.name}</Text>
                     </View>
                     <View style={{flex: 1, flexDirection: "row", justifyContent: 'space-between'}}>
-                        <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flexDirection: "row"}}  activeOpacity={0.8}  onPress={() => navigation.navigate('Comments', {postId: item.id, photo: item.photo})}>
+                        <TouchableOpacity style={styles.iconContainer}  activeOpacity={0.8}  onPress={() => navigation.navigate('Comments', {postId: item.id, photo: item.photo})}>
                             <Text>
                                 <EvilIcons  name="comment" size={24} color="#BDBDBD" />
                             </Text>
                             <Text style={{color: '#BDBDBD'}}>0</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flexDirection: "row"}}  activeOpacity={0.8} onPress={() => navigation.navigate('Map', {location: item.location}) }>
+                        <TouchableOpacity   style={styles.iconContainer} activeOpacity={0.8} onPress={() => navigation.navigate('Map', {location: item.location}) }>
                             <Text>
                                 <MaterialCommunityIcons name="google-maps" size={24} color="#BDBDBD" />
                             </Text>
@@ -61,8 +62,13 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 16,
         lineHeight: 19,
-        marginBottom: 10,
+        // marginBottom: 8,
         color: '#212121',
+    },
+    iconContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: "row",
     }
 });
 
