@@ -1,15 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {View, Image, Text, StyleSheet, KeyboardAvoidingView, Dimensions, TextInput, SafeAreaView, FlatList} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 
 import {firestore} from '../../firebase/config';
 import { useSelector } from "react-redux";
-import { collection, onSnapshot, addDoc, setDoc, doc, updateDoc, getDoc, Timestamp} from "firebase/firestore";
+import { collection, onSnapshot,  setDoc, doc, Timestamp} from "firebase/firestore";
 
 
 export const CommentsScreen = ({route}) => {
     const [isKeyBoardActive, setIsBoardActive] = useState(false);
-
+    const [allComments, setAllComments] = useState([]);
     const [comment, setComment] = useState([]);
     const [time, setTime] = useState('');
     const [dimensions, setdimensions] = useState(
@@ -18,6 +18,10 @@ export const CommentsScreen = ({route}) => {
 
     const {postId, photo} = route.params;
     const {nickName} = useSelector(state => state.auth);
+
+    useEffect(() => {
+        getAllPosts()
+    }, [])
 
     const createPost = async () => {
         try {
@@ -35,15 +39,31 @@ export const CommentsScreen = ({route}) => {
         }
     }
 
+    const getAllPosts = async () => {
+        try {
+            await onSnapshot(collection(firestore, "posts", postId, 'comment'), (snapshot) => {
+                let item = []
+                snapshot.docs.forEach((doc) => {
+                    console.log(doc.data(), 'clg')
+                    item.push({ ...doc.data(), id: doc.id})
+                    return item;
+                })
+                setAllComments(item)
+                console.log(item, 'item')
+            })
+        } catch (error) {
+
+        }
+    }
 
     return (
         <View style={styles.container}>
             <View>
-                <Image style={{width: '100%', height: 200, borderRadius: 8}} />
+                <Image style={{width: '100%', height: 200, borderRadius: 8, marginBottom: 5}} source={{uri: photo}}/>
             </View>
             <SafeAreaView>
                 <FlatList
-                    // data={allComments}
+                    data={allComments}
                     renderItem={({item}) =>
                         <View style={styles.commentContainer}>
                             <Text>{item.comment}</Text>
