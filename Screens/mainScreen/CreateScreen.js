@@ -23,11 +23,11 @@ import {addDoc, collection} from "firebase/firestore";
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 import {useEffect, useState} from "react";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 import Photo from "../../assets/images/camera.svg";
 
 
-export const CreateScreen  = ({navigation}) => {
+export const CreateScreen = ({navigation}) => {
     const [isKeyBoardActive, setIsBoardActive] = useState(false)
     const [camera, setCamera] = useState(null)
     const [photo, setPhoto] = useState('')
@@ -38,18 +38,21 @@ export const CreateScreen  = ({navigation}) => {
         Dimensions.get("window").width - 20 * 2
     );
 
-    const { userId, nickName } = useSelector((state) => state.auth)
+    const {userId, nickName} = useSelector((state) => state.auth)
 
 
     useEffect(() => {
         (async () => {
 
-            let { status } = await Location.requestForegroundPermissionsAsync();
+            let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 console.log('Permission to access location was denied');
 
             }
-            let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, maximumAge: 10000});
+            let location = await Location.getCurrentPositionAsync({
+                accuracy: Location.Accuracy.Highest,
+                maximumAge: 10000
+            });
             setLocation(location);
 
         })();
@@ -72,7 +75,6 @@ export const CreateScreen  = ({navigation}) => {
     }
     const submitFoto = async () => {
         uploadPostToServer()
-        // uploadPhotoToServer()
         navigation.navigate('HomeDefault');
         setIsBoardActive(false)
         Keyboard.dismiss()
@@ -81,7 +83,7 @@ export const CreateScreen  = ({navigation}) => {
         setPhoto('')
     }
 
-const uploadPostToServer = async () => {
+    const uploadPostToServer = async () => {
         try {
             const photo = await uploadPhotoToServer()
             console.log(photo);
@@ -102,7 +104,7 @@ const uploadPostToServer = async () => {
             console.log("error", error.message);
         }
 
-}
+    }
     const uploadPhotoToServer = async () => {
         try {
             const response = await fetch(photo)
@@ -112,7 +114,7 @@ const uploadPostToServer = async () => {
 
             const uniquePostId = Date.now().toString();
 
-            const storageRef  = ref(storage, `postsImage/${uniquePostId}`);
+            const storageRef = ref(storage, `postsImage/${uniquePostId}`);
             await uploadBytes(storageRef, file);
 
             return await getDownloadURL(storageRef);
@@ -159,14 +161,23 @@ const uploadPostToServer = async () => {
                 <View style={{marginBottom: 48}}>
                     <Text style={styles.name}>Редагувати фото</Text>
                 </View>
-                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                     <View style={{...styles.form, marginBottom: isKeyBoardActive ? 32 : 100, width: dimensions}}>
-                        <View style={{ borderBottomColor: '#E8E8E8', borderBottomWidth: 1, marginBottom: 32}}>
-                            <TextInput  style={styles.input}    placeholder="Имя" value={name} onFocus={() => setIsBoardActive(true)}  onChangeText={handleChangeName}/>
+                        <View style={{borderBottomColor: '#E8E8E8', borderBottomWidth: 1, marginBottom: 32}}>
+                            <TextInput style={styles.input} placeholder="Имя" value={name}
+                                       onFocus={() => setIsBoardActive(true)} onChangeText={handleChangeName}/>
                         </View>
-                        <View style={{flexDirection: 'row', alignItems: 'center', borderBottomColor: '#E8E8E8', borderBottomWidth: 1, marginBottom: 32}}>
-                            <MaterialCommunityIcons name="google-maps" size={24} color="#BDBDBD" />
-                            <TextInput style={{...styles.input, paddingLeft: 8}}   placeholder="Место" value={nameLocation} onFocus={() => setIsBoardActive(true)} onChangeText={handleChangeNameLocation}/>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderBottomColor: '#E8E8E8',
+                            borderBottomWidth: 1,
+                            marginBottom: 32
+                        }}>
+                            <MaterialCommunityIcons name="google-maps" size={24} color="#BDBDBD"/>
+                            <TextInput style={{...styles.input, paddingLeft: 8}} placeholder="Место"
+                                       value={nameLocation} onFocus={() => setIsBoardActive(true)}
+                                       onChangeText={handleChangeNameLocation}/>
                         </View>
                         <TouchableOpacity disabled={photo.length === 0 && true} onPress={submitFoto} style={{
                             width: '100%',
@@ -197,7 +208,6 @@ const styles = StyleSheet.create({
 
     },
     camera: {
-
         height: '40%',
         alignItems: 'center',
         justifyContent: 'center',

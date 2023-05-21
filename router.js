@@ -37,8 +37,8 @@ export const useRoute = (isAuth) => {
     if (!isAuth) {
         return (
             <AuthStack.Navigator >
-                <AuthStack.Screen options={{headerShown: false,}} name="Registration" component={RegistrationScreen} />
-                <AuthStack.Screen options={{headerShown: false,}} name="Login" component={LoginScreen} />
+                <AuthStack.Screen options={{ headerShown: false }} name="Registration" component={RegistrationScreen} />
+                <AuthStack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
             </AuthStack.Navigator>
         );
     }
@@ -61,8 +61,6 @@ export const useRoute = (isAuth) => {
                             color={color}
                         />
                     ),
-
-
                     headerTintColor: "#212121",
                     headerTitleStyle: {
                         fontWeight: "bold",
@@ -115,6 +113,7 @@ export const useRoute = (isAuth) => {
                 name="Profile"
                 component={ProfileScreen}
                 options={{
+                    headerShown: false,
                     tabBarIcon: ({size, color }) => (
                         <User
                             width={size}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import {
     StyleSheet,
     View,
@@ -17,8 +17,7 @@ import {useDispatch} from "react-redux";
 import {authSignUpUser} from "../../redux/auth/authOperations";
 
 
-
-export const RegistrationScreen = ({ navigation }) => {
+export const RegistrationScreen = ({navigation}) => {
     const [login, setLogin] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -73,7 +72,7 @@ export const RegistrationScreen = ({ navigation }) => {
                                 value={login}
                                 onChangeText={loginHandler}
                                 placeholder="Логин"
-                                style={{ ...styles.input, marginBottom: 16 }}
+                                style={{...styles.input, marginBottom: 16}}
                                 onFocus={() => setIsKeyboardShown(true)}
                                 onBlur={() => setIsKeyboardShown(false)}
                             />
@@ -82,12 +81,12 @@ export const RegistrationScreen = ({ navigation }) => {
                                 value={email}
                                 onChangeText={emailHandler}
                                 placeholder="Адрес электронной почты"
-                                style={{ ...styles.input, marginBottom: 16 }}
+                                style={{...styles.input, marginBottom: 16}}
                                 onFocus={() => setIsKeyboardShown(true)}
                                 onBlur={() => setIsKeyboardShown(false)}
                             />
 
-                            <View style={{ position: "relative", marginBottom: 43 }}>
+                            <View style={{position: "relative", marginBottom: 43}}>
                                 <TextInput
                                     value={password}
                                     onChangeText={passwordHandler}
@@ -115,7 +114,7 @@ export const RegistrationScreen = ({ navigation }) => {
                                 <Text style={styles.btnText}>Зарегистрироваться</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={()=> navigation.navigate('Login')}
+                                onPress={() => navigation.navigate('Login')}
                                 activeOpacity={0.8}>
                                 <Text
                                     style={styles.signInText}
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     avatar: {
         position: "absolute",
         top: -60,
-        transform: [{ translateX: -60 }],
+        transform: [{translateX: -60}],
         height: 120,
         width: 120,
         backgroundColor: "#F6F6F6",

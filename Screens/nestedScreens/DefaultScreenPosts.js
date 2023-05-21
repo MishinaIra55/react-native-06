@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {View, StyleSheet, FlatList, Image, Text, TouchableOpacity} from "react-native";
 
 import {firestore} from '../../firebase/config';
-import { collection, onSnapshot } from "firebase/firestore";
+import {collection, onSnapshot} from "firebase/firestore";
 import {EvilIcons, MaterialCommunityIcons} from "@expo/vector-icons";
 
-export const DefaultScreenPosts = ({  navigation }) => {
+export const DefaultScreenPosts = ({navigation}) => {
     const [posts, setPosts] = useState([]);
 
 
@@ -25,7 +25,7 @@ export const DefaultScreenPosts = ({  navigation }) => {
         getAllPosts()
 
     }, []);
-    console.log("posts", posts);
+
     return (
         <View style={styles.container}>
             <FlatList data={posts} keyExtractor={(item, idx) => idx.toString()} renderItem={({item}) =>
@@ -36,15 +36,20 @@ export const DefaultScreenPosts = ({  navigation }) => {
                         <Text style={styles.name}>{item.name}</Text>
                     </View>
                     <View style={{flex: 1, flexDirection: "row", justifyContent: 'space-between'}}>
-                        <TouchableOpacity style={styles.iconContainer}  activeOpacity={0.8}  onPress={() => navigation.navigate('Comments', {postId: item.id, photo: item.photo})}>
+                        <TouchableOpacity style={styles.iconContainer} activeOpacity={0.8}
+                                          onPress={() => navigation.navigate('Comments', {
+                                              postId: item.id,
+                                              photo: item.photo
+                                          })}>
                             <Text>
-                                <EvilIcons  name="comment" size={24} color="#BDBDBD" />
+                                <EvilIcons name="comment" size={24} color="#BDBDBD"/>
                             </Text>
                             <Text style={{color: '#BDBDBD'}}>0</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity   style={styles.iconContainer} activeOpacity={0.8} onPress={() => navigation.navigate('Map', {location: item.location}) }>
+                        <TouchableOpacity style={styles.iconContainer} activeOpacity={0.8}
+                                          onPress={() => navigation.navigate('Map', {location: item.location})}>
                             <Text>
-                                <MaterialCommunityIcons name="google-maps" size={24} color="#BDBDBD" />
+                                <MaterialCommunityIcons name="google-maps" size={24} color="#BDBDBD"/>
                             </Text>
                             <Text style={{color: '#212121', textDecorationLine: 'underline'}}>{item.nameLocation}</Text>
                         </TouchableOpacity>

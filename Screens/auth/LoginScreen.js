@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import {
     StyleSheet,
     View,
@@ -12,11 +12,11 @@ import {
     Text,
 } from "react-native";
 
-import { useDispatch } from "react-redux";
-import {authSignInUser, authSignUpUser} from "../../redux/auth/authOperations";
+import {useDispatch} from "react-redux";
+import {authSignInUser} from "../../redux/auth/authOperations";
 
 
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isPassHidden, setIsPassHidden] = useState(true);
@@ -32,7 +32,7 @@ export const LoginScreen = ({ navigation }) => {
         console.log(`Email: ${email}, Password: ${password}`);
         Keyboard.dismiss();
 
-        dispatch(authSignInUser({ email, password}));
+        dispatch(authSignInUser({email, password}));
 
         setEmail("");
         setPassword("");
@@ -59,12 +59,12 @@ export const LoginScreen = ({ navigation }) => {
                                 value={email}
                                 onChangeText={emailHandler}
                                 placeholder="Адрес электронной почты"
-                                style={{ ...styles.input, marginBottom: 16 }}
+                                style={{...styles.input, marginBottom: 16}}
                                 onFocus={() => setIsKeyboardShown(true)}
                                 onBlur={() => setIsKeyboardShown(false)}
                             />
 
-                            <View style={{ position: "relative", marginBottom: 43 }}>
+                            <View style={{position: "relative", marginBottom: 43}}>
                                 <TextInput
                                     value={password}
                                     onChangeText={passwordHandler}
@@ -92,7 +92,7 @@ export const LoginScreen = ({ navigation }) => {
                                 <Text style={styles.btnText}>Войти</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={()=> navigation.navigate('Registration')}
+                                onPress={() => navigation.navigate('Registration')}
                                 activeOpacity={0.8}>
                                 <Text
                                     style={styles.signInText}>Нет аккаунта? Зарегистрироваться</Text>

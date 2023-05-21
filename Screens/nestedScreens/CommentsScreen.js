@@ -1,10 +1,20 @@
 import React, {useEffect, useState} from "react";
-import {View, Image, Text, StyleSheet, KeyboardAvoidingView, Dimensions, TextInput, SafeAreaView, FlatList} from "react-native";
+import {
+    View,
+    Image,
+    Text,
+    StyleSheet,
+    KeyboardAvoidingView,
+    Dimensions,
+    TextInput,
+    SafeAreaView,
+    FlatList
+} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 
 import {firestore} from '../../firebase/config';
-import { useSelector } from "react-redux";
-import { collection, onSnapshot,  setDoc, doc, Timestamp} from "firebase/firestore";
+import {useSelector} from "react-redux";
+import {collection, onSnapshot, setDoc, doc, Timestamp} from "firebase/firestore";
 
 
 export const CommentsScreen = ({route}) => {
@@ -45,7 +55,7 @@ export const CommentsScreen = ({route}) => {
                 let item = []
                 snapshot.docs.forEach((doc) => {
                     console.log(doc.data(), 'clg')
-                    item.push({ ...doc.data(), id: doc.id})
+                    item.push({...doc.data(), id: doc.id})
                     return item;
                 })
                 setAllComments(item)
@@ -67,20 +77,30 @@ export const CommentsScreen = ({route}) => {
                     renderItem={({item}) =>
                         <View style={styles.commentContainer}>
                             <Text>{item.comment}</Text>
-                            <Text>{new Date(item.time.seconds*1000).toUTCString().split(/ /)[4]}</Text>
+                            <Text>{new Date(item.time.seconds * 1000).toUTCString().split(/ /)[4]}</Text>
                         </View>}
                     keyExtractor={item => item.id}
                 />
             </SafeAreaView>
 
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 
                 <View style={{...styles.form, marginBottom: isKeyBoardActive ? 16 : 100, width: dimensions}}>
                     <View style={{position: 'relative'}}>
-                        <TextInput style={styles.input}    placeholder="Комментировать..." value={comment} onFocus={() => setIsBoardActive(true)}  onChangeText={setComment}>
+                        <TextInput style={styles.input} placeholder="Комментировать..." value={comment}
+                                   onFocus={() => setIsBoardActive(true)} onChangeText={setComment}>
 
                         </TextInput>
-                        <AntDesign onPress={createPost} name="arrowup" size={14} color="white" style={{position: 'absolute',right: 8,top: '35%',height: 34,width: 34,borderRadius: 50/2, backgroundColor: '#FF6C00', padding: 10}}/>
+                        <AntDesign onPress={createPost} name="arrowup" size={14} color="white" style={{
+                            position: 'absolute',
+                            right: 8,
+                            top: '35%',
+                            height: 34,
+                            width: 34,
+                            borderRadius: 50 / 2,
+                            backgroundColor: '#FF6C00',
+                            padding: 10
+                        }}/>
                     </View>
                 </View>
             </KeyboardAvoidingView>
@@ -101,7 +121,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginHorizontal: 16,
         padding: 16,
-        backgroundColor:'rgba(0, 0, 0, 0.03)',
+        backgroundColor: 'rgba(0, 0, 0, 0.03)',
         borderRadius: 6,
         marginBottom: 24,
     },
